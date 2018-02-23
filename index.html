@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="de">
+<!--GENERIERT MIT:  Lectora Inspire v.16.1.2(10592) (http://www.trivantis.com) -->
+
+
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=1009" />
+<title>Start</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+<link rel="stylesheet" href="trivantis.css" type="text/css" />
+<style type="text/css">
+  body { background-color:#ffffff; }
+</style>
+
+<!--[if lt IE 7]>
+<style type="text/css">
+    #image12120 img { filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0); }
+    #image12120 { filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/cl1b_3.png',sizingMethod='scale'); }
+    #image57198 img { filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0); }
+    #image57198 { filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/onoff.png',sizingMethod='scale'); }
+</style>
+<![endif]-->
+
+<!--[if lte IE 9]>
+<script>
+document.namespaces.add('v', 'urn:schemas-microsoft-com:vml', "#default#VML")
+</script>
+<![endif]-->
+
+<script src="trivantis.js"></script>
+<script src="trivantis-timedate.js"></script>
+<script src="trivantis-cookie.js"></script>
+<script src="trivantis-button.js"></script>
+<script src="trivantis-image.js"></script>
+<script src="trivantis-inline.js"></script>
+<script src="trivantis-pagetracking.js"></script>
+<script>
+
+<!-- 
+trivWeb20Popups = true;
+
+var arObjs = [];
+if( !is.min )
+  document.write( 'Ihr Browser unterstützt kein dynamisches HTML. Bitte laden Sie eine aktuelle Version von entweder <a href=http://www.microsoft.com/ie/>Microsoft Internet Explorer</a> oder <a href="http://www.mozilla.com/en-US/firefox/">Mozilla Firefox </a> herunter und versuchen Sie erneut, unsere Website zu besuchen.  Vielen Dank.<br /><br />' )
+
+var pageLayer = null
+var winW = screen.width
+var winH = screen.height
+var transformScale = 1
+
+function findWH(){	//echo LD-769
+	if (is.ie) {
+   winW = Math.max(Math.max(document.body.scrollWidth, document.documentElement.scrollWidth)-16,
+					  Math.max(document.body.offsetWidth, document.documentElement.offsetWidth)-16,
+					  Math.max(document.body.clientWidth, document.documentElement.clientWidth)-16 );
+   winH = Math.max(Math.max(document.body.scrollHeight, document.documentElement.scrollHeight)-16,
+					  Math.max(document.body.offsetHeight, document.documentElement.offsetHeight)-16,
+					  Math.max(document.body.clientHeight, document.documentElement.clientHeight)-16 );
+	}
+	else
+	{
+   winW =  document.documentElement.clientWidth ? document.documentElement.clientWidth : document.body.clientWidth;
+   if(is.iOS && (navigator.userAgent.indexOf('CellCast-iPad') != -1 || navigator.userAgent.indexOf('CellCast-iPhone') != -1) )
+		 winW =  getScreenWidth();
+   winH =  document.documentElement.clientHeight ? document.documentElement.clientHeight : document.body.clientHeight;
+	}
+}
+
+function ReFlow() {
+}
+
+
+onload = init
+if( is.webkit && !is.iOSSafari )
+  onbeforeunload = finish
+else
+  onunload = finish
+
+function init() {
+  findWH()
+  if( is.min ){
+    trivPageTracking.InitPageTracking();
+    setTimeout( "preload( 'images/cl1b_3.png','images/onoff.png','images/text49443.png','images/button26146_over.png','images/button26140_over.png','images/button26134_over.png','images/button26128_over.png','images/button26122_over.png','images/button26116_over.png','images/button12965.png','images/button12965_over.png','images/button12965_down.png','images/button12965_disabled.png','images/button29154_over.png','images/text49482.png' )", 0 )
+    pageLayer = new ObjLayer( 'pageDIV' );
+    pageLayer.show();
+    text49443.init()
+    button26146.init()
+    button26140.init()
+    button26134.init()
+    button26128.init()
+    button26122.init()
+    button26116.init()
+    button12965.init()
+    button29154.init()
+    text49482.init()
+    image12120.init()
+    image57198.init()
+    text49443.activate()
+    button26146.activate()
+    button26140.activate()
+    button26134.activate()
+    button26128.activate()
+    button26122.activate()
+    button26116.activate()
+    button12965.activate()
+    button29154.activate()
+    text49482.activate()
+    image12120.activate()
+    image57198.activate()
+    ReFlow();
+    window.scrollTo(0,1);
+    var titleManagerIndexWindow = (window && window.parent && window.parent.bIsTitleManagerIndexFile) ? window.parent : null;
+    if(titleManagerIndexWindow)titleManagerIndexWindow.scrollTo(0,1);
+    if ( trivPageTracking.GetRangeStatus(2) == 'notstarted' ) trivPageTracking.SetRangeStatus(2,2);
+    if( location.hash )
+    {
+      var newHash
+      if( location.hash.charAt(0) == '#' )
+        newHash = location.hash.slice( 1 )
+      else
+        newHash = location.hash
+      location.hash = newHash
+    }
+    setTimeout( 'trivUpdateTOC( 1 )', 100 )
+  }
+}
+
+var trivGoToPage = null
+var trivCompleteCnt = 1;
+var hasProcessedExitActions = false;
+var trivActFBCnt = 0;
+var currFeedbackIdx = 0;
+var trivPageExited = false;
+
+function finish() {
+}
+
+function trivOnFocus() {
+    if( trivPageExited ) return
+}
+
+function checkLeavePage() {
+    if( trivPageExited ) return
+    if( trivActFBCnt == 0 )
+    {
+        currFeedbackIdx++;
+        if( currFeedbackIdx > -1)
+        {
+            trivLeavePage();
+          return;
+        }
+        else if( !checkQuestions( true ))
+          return;
+    }
+    setTimeout( 'checkLeavePage()', 100)
+}
+
+function trivExitPage( newPage, bFeedback ) {
+    if( newPage.indexOf( "ObjLayerAction" ) >= 0 || newPage.indexOf( "javascript:app." ) >= 0 || newPage.indexOf( ".action" ) >= 0 || newPage.indexOf( "history.back()" ) >= 0) trivGoToPage = newPage
+    else trivGoToPage = 'ObjLayerActionGoTo("' + newPage + '")'
+    if( !hasProcessedExitActions ) {
+        findWH()
+        hasProcessedExitActions = true
+        setTimeout( 'checkLeavePage()', 100)
+    }
+}
+
+function trivLeavePage() {
+    trivCompleteCnt--
+    if( trivCompleteCnt <= 0 ) {
+        hasProcessedExitActions = false
+        if( trivGoToPage != null )
+        {
+			eval( trivGoToPage )
+			trivGoToPage = null;
+			if( window.closed ) trivPageExited = true;
+        }
+    }
+}
+
+function trivPrevPage() {
+}
+
+function trivNextPage() {
+    trivExitPage( 'page44.html', true )
+}
+
+function trivUpdateTOC( bRecurse ) {
+    var i
+}
+
+function trivUpdateEntry() {
+}
+
+function trivResetEntry(entFld) {
+}
+
+function OnDeviceRotate() {
+
+}
+
+function action26147(fn){
+    trivExitPage('page54.html',true); 
+    if(fn && typeof(fn) == 'string' ) eval(fn);
+    else if(fn && typeof(fn) == 'function' ) fn();
+}
+
+function button26146onUp() {
+  action26147();
+}
+
+function action26141(fn){
+    trivExitPage('page48.html',true); 
+    if(fn && typeof(fn) == 'string' ) eval(fn);
+    else if(fn && typeof(fn) == 'function' ) fn();
+}
+
+function button26140onUp() {
+  action26141();
+}
+
+function action26135(fn){
+    trivExitPage('page46.html',true); 
+    if(fn && typeof(fn) == 'string' ) eval(fn);
+    else if(fn && typeof(fn) == 'function' ) fn();
+}
+
+function button26134onUp() {
+  action26135();
+}
+
+function action26129(fn){
+    trivExitPage('page56.html',true); 
+    if(fn && typeof(fn) == 'string' ) eval(fn);
+    else if(fn && typeof(fn) == 'function' ) fn();
+}
+
+function button26128onUp() {
+  action26129();
+}
+
+function action26123(fn){
+    trivExitPage('page50.html',true); 
+    if(fn && typeof(fn) == 'string' ) eval(fn);
+    else if(fn && typeof(fn) == 'function' ) fn();
+}
+
+function button26122onUp() {
+  action26123();
+}
+
+function action26117(fn){
+    trivExitPage('page52.html',true); 
+    if(fn && typeof(fn) == 'string' ) eval(fn);
+    else if(fn && typeof(fn) == 'function' ) fn();
+}
+
+function button26116onUp() {
+  action26117();
+}
+
+function action12970(fn){
+    trivExitPage('page44.html',true); 
+    if(fn && typeof(fn) == 'string' ) eval(fn);
+    else if(fn && typeof(fn) == 'function' ) fn();
+}
+
+function button12965onUp() {
+  action12970();
+}
+
+function action29155(fn){
+    trivExitPage('page44.html',true); 
+    if(fn && typeof(fn) == 'string' ) eval(fn);
+    else if(fn && typeof(fn) == 'function' ) fn();
+}
+
+function button29154onUp() {
+  action29155();
+}
+
+if( is.min ){
+text49443 = new ObjImage('text49443','images/text49443.png','Wie funktioniert der Kompressor und was bedeuten seine Parameter?',294,205,421,65,1,22,'div',null,0 )
+text49443.initRotateAngle(0,0,0)
+text49443.initHasShadow(0)
+text49443.addIe8Attr(294, 205, 421, 65, 0, 0)
+text49443.addBorder(0)
+text49443.addOpacity(100)
+text49443.build()
+
+button26146 = new ObjButton('button26146', 'GAIN',117,353,58.00,80.00,1,23,'div','',1,'',0)
+button26146.setFillStyle(1)
+button26146.initRotateAngle(0,0,0,0.00,0.00,58,80)
+button26146.initHasShadow(0)
+button26146.initHasReflection(0)
+button26146.setImages('images/transbtn.gif', '', 'images/button26146_over.png','');
+button26146.setStateOpacity( 0.00, 0.00, 0.15, 0.00 );
+button26146.addIe8Attr(117.00, 353.00, 58.00, 80.00, 0, 0)
+button26146.addOpacity(0)
+button26146.initImageMap('14,0,44,0,47,0,49,1,52,2,54,4,56,6,57,9,58,11,58,14,58,66,58,69,57,71,56,74,54,76,52,78,49,79,47,80,44,80,14,80,11,80,9,79,6,78,4,76,2,74,1,71,0,69,0,66,0,14,0,11,1,9,2,6,4,4,6,2,9,1,11,0,14,0','M 14.00 0.00 L 44.00 0.00 L 46.81 0.31 L 49.44 1.13 L 51.81 2.38 L 53.94 4.13 L 55.63 6.19 L 56.88 8.56 L 57.69 11.19 L 58.00 14.00 L 58.00 66.00 L 57.69 68.81 L 56.88 71.44 L 55.63 73.81 L 53.94 75.94 L 51.81 77.63 L 49.44 78.88 L 46.81 79.69 L 44.00 80.00 L 14.00 80.00 L 11.25 79.75 L 8.69 78.94 L 6.25 77.69 L 4.13 75.94 L 2.38 73.81 L 1.06 71.38 L 0.25 68.75 L 0.00 66.00 L 0.00 14.00 L 0.31 11.19 L 1.13 8.56 L 2.38 6.19 L 4.13 4.13 L 6.19 2.38 L 8.56 1.13 L 11.19 0.31 L 14.00 0.00 z')
+button26146.onUp = button26146onUp
+button26146.hasOnUp = true
+button26146.capture=4
+button26146.build()
+
+button26140 = new ObjButton('button26140', 'RATIO',231,354,56.00,79.00,1,24,'div','',1,'',0)
+button26140.setFillStyle(1)
+button26140.initRotateAngle(0,0,0,0.00,0.00,56,79)
+button26140.initHasShadow(0)
+button26140.initHasReflection(0)
+button26140.setImages('images/transbtn.gif', '', 'images/button26140_over.png','');
+button26140.setStateOpacity( 0.00, 0.00, 0.15, 0.00 );
+button26140.addIe8Attr(231.00, 354.00, 56.00, 79.00, 0, 0)
+button26140.addOpacity(0)
+button26140.initImageMap('14,0,42,0,45,0,47,1,50,2,52,4,54,6,55,9,56,11,56,14,56,65,56,68,55,70,54,73,52,75,50,77,47,78,45,79,42,79,14,79,11,79,9,78,6,77,4,75,2,73,1,70,0,68,0,65,0,14,0,11,1,9,2,6,4,4,6,2,9,1,11,0,14,0','M 14.00 0.00 L 42.00 0.00 L 44.81 0.31 L 47.44 1.13 L 49.81 2.38 L 51.94 4.13 L 53.63 6.19 L 54.88 8.56 L 55.69 11.19 L 56.00 14.00 L 56.00 65.00 L 55.69 67.81 L 54.88 70.44 L 53.63 72.81 L 51.94 74.94 L 49.81 76.63 L 47.44 77.88 L 44.81 78.69 L 42.00 79.00 L 14.00 79.00 L 11.25 78.75 L 8.69 77.94 L 6.25 76.69 L 4.13 74.94 L 2.38 72.81 L 1.06 70.38 L 0.25 67.75 L 0.00 65.00 L 0.00 14.00 L 0.31 11.19 L 1.13 8.56 L 2.38 6.19 L 4.13 4.13 L 6.19 2.38 L 8.56 1.13 L 11.19 0.31 L 14.00 0.00 z')
+button26140.onUp = button26140onUp
+button26140.hasOnUp = true
+button26140.capture=4
+button26140.build()
+
+button26134 = new ObjButton('button26134', 'THRESHOLD',343,353,59.00,80.00,1,25,'div','',1,'',0)
+button26134.setFillStyle(1)
+button26134.initRotateAngle(0,0,0,0.00,0.00,59,80)
+button26134.initHasShadow(0)
+button26134.initHasReflection(0)
+button26134.setImages('images/transbtn.gif', '', 'images/button26134_over.png','');
+button26134.setStateOpacity( 0.00, 0.00, 0.15, 0.00 );
+button26134.addIe8Attr(343.00, 353.00, 59.00, 80.00, 0, 0)
+button26134.addOpacity(0)
+button26134.initImageMap('14,0,45,0,48,0,50,1,53,2,55,4,57,6,58,9,59,11,59,14,59,66,59,69,58,71,57,74,55,76,53,78,50,79,48,80,45,80,14,80,11,80,9,79,6,78,4,76,2,74,1,71,0,69,0,66,0,14,0,11,1,9,2,6,4,4,6,2,9,1,11,0,14,0','M 14.00 0.00 L 45.00 0.00 L 47.81 0.31 L 50.44 1.13 L 52.81 2.38 L 54.94 4.13 L 56.63 6.19 L 57.88 8.56 L 58.69 11.19 L 59.00 14.00 L 59.00 66.00 L 58.69 68.81 L 57.88 71.44 L 56.63 73.81 L 54.94 75.94 L 52.81 77.63 L 50.44 78.88 L 47.81 79.69 L 45.00 80.00 L 14.00 80.00 L 11.25 79.75 L 8.69 78.94 L 6.25 77.69 L 4.13 75.94 L 2.38 73.81 L 1.06 71.38 L 0.25 68.75 L 0.00 66.00 L 0.00 14.00 L 0.31 11.19 L 1.13 8.56 L 2.38 6.19 L 4.13 4.13 L 6.19 2.38 L 8.56 1.13 L 11.19 0.31 L 14.00 0.00 z')
+button26134.onUp = button26134onUp
+button26134.hasOnUp = true
+button26134.capture=4
+button26134.build()
+
+button26128 = new ObjButton('button26128', 'VU METER',435,333,138.00,70.00,1,26,'div','',1,'',0)
+button26128.setFillStyle(1)
+button26128.initRotateAngle(0,0,0,-0.00,-0.00,138,70)
+button26128.initHasShadow(0)
+button26128.initHasReflection(0)
+button26128.setImages('images/transbtn.gif', '', 'images/button26128_over.png','');
+button26128.setStateOpacity( 0.00, 0.00, 0.15, 0.00 );
+button26128.addIe8Attr(435.00, 333.00, 138.00, 70.00, 0, 0)
+button26128.addOpacity(0)
+button26128.initImageMap('0,0,138,0,138,70,0,70,0,0','M 0.00 0.00 L 138.00 0.00 L 138.00 70.00 L 0.00 70.00 L 0.00 0.00 z')
+button26128.onUp = button26128onUp
+button26128.hasOnUp = true
+button26128.capture=4
+button26128.build()
+
+button26122 = new ObjButton('button26122', 'ATTACK',608,354,57.00,79.00,1,27,'div','',1,'',0)
+button26122.setFillStyle(1)
+button26122.initRotateAngle(0,0,0,0.00,0.00,57,79)
+button26122.initHasShadow(0)
+button26122.initHasReflection(0)
+button26122.setImages('images/transbtn.gif', '', 'images/button26122_over.png','');
+button26122.setStateOpacity( 0.00, 0.00, 0.15, 0.00 );
+button26122.addIe8Attr(608.00, 354.00, 57.00, 79.00, 0, 0)
+button26122.addOpacity(0)
+button26122.initImageMap('14,0,43,0,46,0,48,1,51,2,53,4,55,6,56,9,57,11,57,14,57,65,57,68,56,70,55,73,53,75,51,77,48,78,46,79,43,79,14,79,11,79,9,78,6,77,4,75,2,73,1,70,0,68,0,65,0,14,0,11,1,9,2,6,4,4,6,2,9,1,11,0,14,0','M 14.00 0.00 L 43.00 0.00 L 45.81 0.31 L 48.44 1.13 L 50.81 2.38 L 52.94 4.13 L 54.63 6.19 L 55.88 8.56 L 56.69 11.19 L 57.00 14.00 L 57.00 65.00 L 56.69 67.81 L 55.88 70.44 L 54.63 72.81 L 52.94 74.94 L 50.81 76.63 L 48.44 77.88 L 45.81 78.69 L 43.00 79.00 L 14.00 79.00 L 11.25 78.75 L 8.69 77.94 L 6.25 76.69 L 4.13 74.94 L 2.38 72.81 L 1.06 70.38 L 0.25 67.75 L 0.00 65.00 L 0.00 14.00 L 0.31 11.19 L 1.13 8.56 L 2.38 6.19 L 4.13 4.13 L 6.19 2.38 L 8.56 1.13 L 11.19 0.31 L 14.00 0.00 z')
+button26122.onUp = button26122onUp
+button26122.hasOnUp = true
+button26122.capture=4
+button26122.build()
+
+button26116 = new ObjButton('button26116', 'RELEASE',721,355,57.00,78.00,1,28,'div','',1,'',0)
+button26116.setFillStyle(1)
+button26116.initRotateAngle(0,0,0,0.00,0.00,57,78)
+button26116.initHasShadow(0)
+button26116.initHasReflection(0)
+button26116.setImages('images/transbtn.gif', '', 'images/button26116_over.png','');
+button26116.setStateOpacity( 0.00, 0.00, 0.15, 0.00 );
+button26116.addIe8Attr(721.00, 355.00, 57.00, 78.00, 0, 0)
+button26116.addOpacity(0)
+button26116.initImageMap('14,0,43,0,46,0,48,1,51,2,53,4,55,6,56,9,57,11,57,14,57,64,57,67,56,69,55,72,53,74,51,76,48,77,46,78,43,78,14,78,11,78,9,77,6,76,4,74,2,72,1,69,0,67,0,64,0,14,0,11,1,9,2,6,4,4,6,2,9,1,11,0,14,0','M 14.00 0.00 L 43.00 0.00 L 45.81 0.31 L 48.44 1.13 L 50.81 2.38 L 52.94 4.13 L 54.63 6.19 L 55.88 8.56 L 56.69 11.19 L 57.00 14.00 L 57.00 64.00 L 56.69 66.81 L 55.88 69.44 L 54.63 71.81 L 52.94 73.94 L 50.81 75.63 L 48.44 76.88 L 45.81 77.69 L 43.00 78.00 L 14.00 78.00 L 11.25 77.75 L 8.69 76.94 L 6.25 75.69 L 4.13 73.94 L 2.38 71.81 L 1.06 69.38 L 0.25 66.75 L 0.00 64.00 L 0.00 14.00 L 0.31 11.19 L 1.13 8.56 L 2.38 6.19 L 4.13 4.13 L 6.19 2.38 L 8.56 1.13 L 11.19 0.31 L 14.00 0.00 z')
+button26116.onUp = button26116onUp
+button26116.hasOnUp = true
+button26116.capture=4
+button26116.build()
+
+button12965 = new ObjButton('button12965', 'Schaltflächen',464,471,81.00,37.00,1,29,'div','',1,'',0)
+button12965.setFillStyle(1)
+button12965.initRotateAngle(0,0,0,-0.00,-0.00,81,37)
+button12965.initHasShadow(0)
+button12965.initHasReflection(0)
+button12965.setImages('images/button12965.png', 'images/button12965_down.png', 'images/button12965_over.png','images/button12965_disabled.png');
+button12965.setStateOpacity( 1.00, 1.00, 1.00, 0.60 );
+button12965.addIe8Attr(464.00, 471.00, 81.00, 37.00, 0, 0)
+button12965.addOpacity(100)
+button12965.initImageMap('0,0,81,0,81,37,0,37,0,0','M 0.00 0.00 L 81.00 0.00 L 81.00 37.00 L 0.00 37.00 L 0.00 0.00 z')
+button12965.onUp = button12965onUp
+button12965.hasOnUp = true
+button12965.capture=4
+button12965.build()
+
+button29154 = new ObjButton('button29154', 'START',844,365,37.00,34.00,1,30,'div','',1,'',0)
+button29154.setFillStyle(1)
+button29154.initRotateAngle(0,0,0,0.00,0.00,37,34)
+button29154.initHasShadow(0)
+button29154.initHasReflection(0)
+button29154.setImages('images/transbtn.gif', '', 'images/button29154_over.png','');
+button29154.setStateOpacity( 0.00, 0.00, 0.15, 0.00 );
+button29154.addIe8Attr(844.00, 365.00, 37.00, 34.00, 0, 0)
+button29154.addOpacity(0)
+button29154.initImageMap('0,17,0,14,1,10,3,8,5,5,8,3,11,1,15,0,19,0,22,0,26,1,29,3,32,5,34,8,36,10,37,14,37,17,37,20,36,24,34,27,32,29,29,31,26,33,22,34,19,34,15,34,11,33,8,31,5,29,3,27,1,24,0,20,0,17','M 0.00 17.00 L 0.38 13.56 L 1.44 10.38 L 3.19 7.50 L 5.44 5.00 L 8.19 2.94 L 11.31 1.31 L 14.75 0.38 L 18.50 0.00 L 22.25 0.38 L 25.69 1.31 L 28.88 2.94 L 31.63 5.00 L 33.88 7.50 L 35.56 10.38 L 36.63 13.56 L 37.00 17.00 L 36.63 20.44 L 35.56 23.63 L 33.88 26.50 L 31.63 29.06 L 28.88 31.13 L 25.69 32.69 L 22.25 33.69 L 18.50 34.00 L 14.75 33.69 L 11.31 32.69 L 8.19 31.13 L 5.44 29.06 L 3.19 26.50 L 1.44 23.63 L 0.38 20.44 L 0.00 17.00 z')
+button29154.onUp = button29154onUp
+button29154.hasOnUp = true
+button29154.capture=4
+button29154.build()
+
+text49482 = new ObjImage('text49482','images/text49482.png','AUDIO KOMPRESSOR',268,123,472,68,1,31,'div',null,0 )
+text49482.initRotateAngle(0,0,0)
+text49482.initHasShadow(1)
+text49482.addIe8Attr(268, 123, 472, 68, 0, 0)
+text49482.addShadow(0,0,0.60,'0','0','0',0,0,0,8.00,2)
+text49482.addBorder(0)
+text49482.addOpacity(100)
+text49482.build()
+
+image12120 = new ObjImage('image12120','images/cl1b_3.png','Cl1B_3',69,306,870,128,1,10,'div',null, 0 )
+image12120.initRotateAngle(0,0,0,0,0,0,0)
+image12120.initHasShadow(1)
+image12120.initHasReflection(0)
+image12120.addIe8Attr(69, 306, 870, 128, 0, 0)
+image12120.initImageMap(1,'0,0,870,0,870,128,0,128,0,0','M 0 0 L 870 0 L 870 128 L 0 128 L 0 0 z')
+image12120.addShadow(275,4,0.76,'00','00','00',0,0,0,5.00,2)
+image12120.addBorder(0)
+image12120.addOpacity(100)
+image12120.build()
+
+image57198 = new ObjImage('image57198','images/onoff.png','ONOFF',842,364,41,41,1,11,'div',null, 0 )
+image57198.initRotateAngle(319,0,0,0,0,0,0)
+image57198.initHasShadow(0)
+image57198.initHasReflection(0)
+image57198.addIe8Attr(833, 355, 58, 57, 0, 0)
+image57198.initImageMap(1,'0,0,41,0,41,41,0,41,0,0','M 0 0 L 41 0 L 41 41 L 0 41 L 0 0 z')
+image57198.addBorder(0)
+image57198.addOpacity(100)
+image57198.build()
+
+arObjs.push(text49443);
+arObjs.push(button26146);
+arObjs.push(button26140);
+arObjs.push(button26134);
+arObjs.push(button26128);
+arObjs.push(button26122);
+arObjs.push(button26116);
+arObjs.push(button12965);
+arObjs.push(button29154);
+arObjs.push(text49482);
+arObjs.push(image12120);
+arObjs.push(image57198);
+
+
+writeStyleSheets(arObjs);}
+// -->
+
+</script>
+</head>
+
+<body onfocus="trivOnFocus()" onResize="ReFlow()">
+
+<script>
+if( is.min ){
+    findWH()
+    var left = 0
+    document.write('<style type="text/css">#pageDIV { position: absolute; top:0px; left: ' + left + 'px; width:1009px; height:662px; clip:rect(0px 1009px 662px 0px); overflow:hidden;' )
+    if(is.iOS)
+		document.write('-webkit-text-size-adjust:100%;')
+    document.write('layer-background-image: url(images/bkgnd005.jpg); background-image: url(images/bkgnd005.jpg); background-repeat:repeat-x;' )
+    document.write('} </style>')
+    document.write('<DIV id=\"pageDIV\">')
+}
+</script>
+
+<script>
+if( is.min ){
+    document.write(text49443.div)
+    document.write(button26146.div)
+    document.write(button26140.div)
+    document.write(button26134.div)
+    document.write(button26128.div)
+    document.write(button26122.div)
+    document.write(button26116.div)
+    document.write(button12965.div)
+    document.write(button29154.div)
+    document.write(text49482.div)
+    document.write(image12120.div)
+    document.write(image57198.div)
+    document.write("</DIV>")
+}
+</script>
+
+</body>
+</html>
