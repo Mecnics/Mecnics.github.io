@@ -117,8 +117,7 @@ function createButton(name, soundSrc, fileName) {
 
     button.addEventListener('click', () => {
         if (audio && !audio.paused) {
-            // Verhindert mehrfaches Starten
-            return;
+            return; // Verhindert mehrfaches Starten
         }
 
         if (currentAudio) {
@@ -126,10 +125,13 @@ function createButton(name, soundSrc, fileName) {
             currentAudio.currentTime = 0;
         }
 
-        audio = new Audio(soundSrc);
+        audio = new Audio(soundSrc); // Base64-Daten verwenden
         currentAudio = audio;
 
-        audio.play();
+        audio.play().catch((error) => {
+            console.error("Fehler beim Abspielen der Audiodatei:", error);
+            alert("Audio konnte nicht abgespielt werden. Bitte versuchen Sie es erneut.");
+        });
         stopBtn.disabled = false;
 
         audio.addEventListener('ended', () => {
@@ -152,7 +154,7 @@ function createButton(name, soundSrc, fileName) {
     deleteBtn.textContent = '✖';
 
     deleteBtn.addEventListener('click', () => {
-        const confirmed = confirm(Möchtest du den Button "${name}" wirklich löschen?);
+        const confirmed = confirm(`Möchtest du den Button "${name}" wirklich löschen?`);
         if (confirmed) {
             if (audio) {
                 audio.pause();
@@ -178,6 +180,7 @@ function createButton(name, soundSrc, fileName) {
 
     buttons.push({ name, soundSrc, fileName });
 }
+
 
         // Sound abspielen
         function playSound(src) {
@@ -217,7 +220,7 @@ function createButton(name, soundSrc, fileName) {
             buttons.forEach(button => {
                 const base64 = button.soundSrc.split(',')[1];
                 zip.file(button.fileName, base64, { base64: true });
-                zip.file(${button.name}.json, JSON.stringify({ name: button.name, fileName: button.fileName }));
+                zip.file(`${button.name}.json`, JSON.stringify({ name: button.name, fileName: button.fileName }));
             });
 
             const blob = await zip.generateAsync({ type: 'blob' });
@@ -233,26 +236,27 @@ function createButton(name, soundSrc, fileName) {
         });
 
         importConfig.addEventListener('change', async (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
+    const file = e.target.files[0];
+    if (!file) return;
 
-            const zip = new JSZip();
-            const content = await zip.loadAsync(file);
-            const entries = Object.keys(content.files);
+    const zip = new JSZip();
+    const content = await zip.loadAsync(file);
+    const entries = Object.keys(content.files);
 
-            for (const entry of entries) {
-                if (entry.endsWith('.json')) {
-                    const metaData = JSON.parse(await zip.file(entry).async('string'));
-                    const soundFile = content.files[metaData.fileName];
+    for (const entry of entries) {
+        if (entry.endsWith('.json')) {
+            const metaData = JSON.parse(await zip.file(entry).async('string'));
+            const soundFile = content.files[metaData.fileName];
 
-                    if (soundFile) {
-                        const soundData = await soundFile.async('blob');
-                        const soundSrc = URL.createObjectURL(soundData);
-                        createButton(metaData.name, soundSrc, metaData.fileName);
-                    }
-                }
+            if (soundFile) {
+                const soundData = await soundFile.async('base64');
+                const soundSrc = `data:audio/*;base64,${soundData}`; // Base64-Daten als Quelle
+                createButton(metaData.name, soundSrc, metaData.fileName);
             }
-        });
+        }
+    }
+});
+
     </script>
 </body>
 </html>
