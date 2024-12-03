@@ -152,7 +152,7 @@ function createButton(name, soundSrc, fileName) {
     deleteBtn.textContent = '✖';
 
     deleteBtn.addEventListener('click', () => {
-        const confirmed = confirm(`Möchtest du den Button "${name}" wirklich löschen?`);
+        const confirmed = confirm(Möchtest du den Button "${name}" wirklich löschen?);
         if (confirmed) {
             if (audio) {
                 audio.pause();
@@ -213,56 +213,46 @@ function createButton(name, soundSrc, fileName) {
 
         // Konfiguration speichern
         saveConfig.addEventListener('click', async () => {
-    const zip = new JSZip();
-    buttons.forEach(button => {
-        const base64 = button.soundSrc.split(',')[1];
-        zip.file(button.fileName, base64, { base64: true });
-        zip.file(`${button.name}.json`, JSON.stringify({ name: button.name, fileName: button.fileName }));
-    });
+            const zip = new JSZip();
+            buttons.forEach(button => {
+                const base64 = button.soundSrc.split(',')[1];
+                zip.file(button.fileName, base64, { base64: true });
+                zip.file(${button.name}.json, JSON.stringify({ name: button.name, fileName: button.fileName }));
+            });
 
-    const blob = await zip.generateAsync({ type: 'blob' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'soundboard.zip';
-    a.click();
-});
+            const blob = await zip.generateAsync({ type: 'blob' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'soundboard.zip';
+            a.click();
+        });
+
+        // Konfiguration laden
+        loadConfig.addEventListener('click', () => {
+            importConfig.click();
+        });
+
         importConfig.addEventListener('change', async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+            const file = e.target.files[0];
+            if (!file) return;
 
-    try {
-        const zip = new JSZip();
-        const content = await zip.loadAsync(file);
-        const entries = Object.keys(content.files);
+            const zip = new JSZip();
+            const content = await zip.loadAsync(file);
+            const entries = Object.keys(content.files);
 
-        for (const entry of entries) {
-            if (entry.endsWith('.json')) {
-                const metaData = JSON.parse(await zip.file(entry).async('string'));
-                const soundFile = content.files[metaData.fileName];
+            for (const entry of entries) {
+                if (entry.endsWith('.json')) {
+                    const metaData = JSON.parse(await zip.file(entry).async('string'));
+                    const soundFile = content.files[metaData.fileName];
 
-                if (soundFile) {
-                    const soundData = await soundFile.async('base64'); // Base64 statt Blob
-                    const soundSrc = `data:audio/*;base64,${soundData}`; // Base64-URL
-                    createButton(metaData.name, soundSrc, metaData.fileName);
+                    if (soundFile) {
+                        const soundData = await soundFile.async('blob');
+                        const soundSrc = URL.createObjectURL(soundData);
+                        createButton(metaData.name, soundSrc, metaData.fileName);
+                    }
                 }
             }
-        }
-    } catch (error) {
-        console.error("Fehler beim Laden der Konfiguration:", error);
-        alert("Es gab ein Problem beim Importieren der Datei. Bitte stellen Sie sicher, dass die Datei korrekt ist.");
-    }
-});
-
-const soundData = await soundFile.async('base64');
-if (!soundData) {
-    console.error("Sound-Daten konnten nicht gelesen werden.");
-    return;
-}
-const soundSrc = `data:audio/*;base64,${soundData}`;
-console.log("Audio-Quelle erfolgreich erstellt:", soundSrc);
-createButton(metaData.name, soundSrc, metaData.fileName);
-
-
+        });
     </script>
 </body>
 </html>
