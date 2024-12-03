@@ -3,18 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Soundboard</title>
+    <title>Soundboard Studio DRuMM</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
         }
 
+        #buttonName {
+          width: 200px;
+          height: 30px;
+        }
+
+        #soundFile {
+          width: 500px;
+          font-weight: bold;
+          font-size: 18px;
+        }
+
+        #addButton {
+          background-color: lightgreen;
+          width: 100px;
+          height: 50px;
+        }
+
+        #addButton:hover {
+          background-color: lightgreen;
+          opacity: 70%;
+          width: 100px;
+          height: 50px;
+        }
+
+        #saveConfig {
+          background-color: orange;
+          margin-left: 40px;
+          width: 100px;
+          height: 50px;
+        }
+
+        #saveConfig:hover {
+          background-color: orange;
+          opacity: 70%;
+          width: 100px;
+          height: 50px;
+        }
+
+        #loadConfig {
+          background-color: darkorange;
+          width: 100px;
+          height: 50px;
+        }
+
+        #loadConfig:hover {
+          background-color: darkorange;
+          opacity: 70%;
+          width: 100px;
+          height: 50px;
+        }
+
         /* Abspiel-Button optisch hervorheben */
         .play-btn {
+          width: 150px;
+          height: 100px;
             background-color: #28a745; /* Auffälliges Grün */
             color: white;
-            font-size: 16px;
+            font-size: 20px;
             font-weight: bold;
             border: none;
             border-radius: 5px;
@@ -31,15 +84,17 @@
 
         .play-btn:active {
             background-color: #1e7e34; /* Noch dunkler bei Klick */
-            transform: scale(1.02); /* Leichtes Zurückfedern */
+            transform: scale(1.5); /* Leichtes Zurückfedern */
         }
 
 
         .soundboard {
+          margin-top: 20px;
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 20px;
         }
+
         .button-container {
         position: relative;
         display: flex;
@@ -90,17 +145,23 @@ cursor: pointer;
             padding: 5px 10px;
             cursor: pointer;
         }
+
+      .save-btn {
+        background: red;
+      }
+
         .form {
             margin-bottom: 20px;
         }
+
     </style>
 </head>
 <body>
-    <h1>Soundboard</h1>
+    <h1>Soundboard Studio DRuMM</h1>
     <div class="form">
         <input type="text" id="buttonName" placeholder="Button-Name" required>
         <input type="file" id="soundFile" accept="audio/*" required>
-        <button id="addButton">Hinzufügen</button>
+        <button id="addButton">+ Hinzufügen</button>
         <button id="saveConfig">Speichern</button>
         <input type="file" id="importConfig" style="display: none;" accept=".zip">
         <button id="loadConfig">Importieren</button>
