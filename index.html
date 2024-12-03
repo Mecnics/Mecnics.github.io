@@ -226,6 +226,9 @@ function createButton(name, soundSrc, fileName) {
     a.download = 'soundboard.zip';
     a.click();
 });
+loadConfig.addEventListener('click', () => {
+  importConfig.click();
+});
         importConfig.addEventListener('change', async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -252,16 +255,6 @@ function createButton(name, soundSrc, fileName) {
         alert("Es gab ein Problem beim Importieren der Datei. Bitte stellen Sie sicher, dass die Datei korrekt ist.");
     }
 });
-
-const soundData = await soundFile.async('base64');
-if (!soundData) {
-    console.error("Sound-Daten konnten nicht gelesen werden.");
-    return;
-}
-const soundSrc = `data:audio/*;base64,${soundData}`;
-console.log("Audio-Quelle erfolgreich erstellt:", soundSrc);
-createButton(metaData.name, soundSrc, metaData.fileName);
-
 
     </script>
 </body>
