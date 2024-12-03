@@ -10,6 +10,12 @@
             margin: 20px;
         }
 
+          .volume-slider {
+          width: 100%;
+          margin-top: 10px;
+        }
+
+
         /* Abspiel-Button optisch hervorheben */
         .play-btn {
             background-color: #28a745; /* Auffälliges Grün */
@@ -147,12 +153,21 @@ function createButton(name, soundSrc, fileName) {
 
     const button = document.createElement('button');
     button.textContent = name;
-    button.className = 'play-btn'; // Neue Klasse für Abspiel-Button
+    button.className = 'play-btn';
 
     const stopBtn = document.createElement('button');
     stopBtn.textContent = 'Stop';
     stopBtn.className = 'stop-btn';
     stopBtn.disabled = true;
+
+    // Lautstärkeregler erstellen
+    const volumeSlider = document.createElement('input');
+    volumeSlider.type = 'range';
+    volumeSlider.className = 'volume-slider';
+    volumeSlider.min = 0;
+    volumeSlider.max = 1;
+    volumeSlider.step = 0.01;
+    volumeSlider.value = 1; // Standard: volle Lautstärke
 
     let audio = null;
 
@@ -167,9 +182,9 @@ function createButton(name, soundSrc, fileName) {
         }
 
         audio = new Audio(soundSrc);
+        audio.volume = volumeSlider.value; // Lautstärke initial setzen
         currentAudio = audio;
 
-        // Eventuelle Probleme bei der Wiedergabe abfangen
         audio.play().then(() => {
             stopBtn.disabled = false;
         }).catch((error) => {
@@ -189,6 +204,13 @@ function createButton(name, soundSrc, fileName) {
             audio.currentTime = 0;
             stopBtn.disabled = true;
             currentAudio = null;
+        }
+    });
+
+    // Lautstärkeregler mit Audio verknüpfen
+    volumeSlider.addEventListener('input', () => {
+        if (audio) {
+            audio.volume = volumeSlider.value;
         }
     });
 
@@ -217,12 +239,14 @@ function createButton(name, soundSrc, fileName) {
 
     container.appendChild(button);
     container.appendChild(stopBtn);
+    container.appendChild(volumeSlider); // Lautstärkeregler hinzufügen
     container.appendChild(deleteBtn);
     container.appendChild(editBtn);
     soundboard.appendChild(container);
 
     buttons.push({ name, soundSrc, fileName });
 }
+
 
 
 
