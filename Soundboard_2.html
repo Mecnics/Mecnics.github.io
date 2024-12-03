@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soundboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .soundboard {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .button-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .button-container button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 5px;
+        }
+        .delete-btn {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: red;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 12px;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        .edit-btn {
+            margin-top: 5px;
+            background: orange;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .form {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Soundboard</h1>
+    <div class="form">
+        <input type="text" id="buttonName" placeholder="Button-Name" required>
+        <input type="file" id="soundFile" accept="audio/*" required>
+        <button id="addButton">Hinzufügen</button>
+        <button id="saveConfig">Speichern</button>
+        <input type="file" id="importConfig" style="display: none;" accept=".zip">
+        <button id="loadConfig">Importieren</button>
+    </div>
+    <div class="soundboard" id="soundboard"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jszip/dist/jszip.min.js"></script>
+    <script>
+        const soundboard = document.getElementById('soundboard');
+        const addButton = document.getElementById('addButton');
+        const buttonNameInput = document.getElementById('buttonName');
+        const soundFileInput = document.getElementById('soundFile');
+        const saveConfig = document.getElementById('saveConfig');
+        const loadConfig = document.getElementById('loadConfig');
+        const importConfig = document.getElementById('importConfig');
+        const buttons = [];
+
+        let currentAudio = null; // Aktuell laufender Sound
+
+// Button hinzufügen
+addButton.addEventListener('click', () => {
+    const buttonName = buttonNameInput.value.trim();
+    const soundFile = soundFileInput.files[0];
+
+    if (!buttonName || !soundFile) {
+        alert('Bitte einen Namen und eine Sound-Datei angeben.');
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+        createButton(buttonName, reader.result, soundFile.name);
+    };
+    reader.readAsDataURL(soundFile);
+
+    buttonNameInput.value = '';
+    soundFileInput.value = '';
+});
+
+// Button erstellen
+function createButton(name, soundSrc, fileName) {
+    const container = document.createElement('div');
+    container.className = 'button-container';
+
+    const button = document.createElement('button');
+    button.textContent = name;
+
+    const stopBtn = document.createElement('button');
+    stopBtn.textContent = 'Stop';
+    stopBtn.className = 'stop-btn';
+    stopBtn.disabled = true;
+
+    let audio = null;
+
+    button.addEventListener('click', () => {
+        if (audio && !audio.paused) {
+            // Verhindert mehrfaches Starten
+            return;
+        }
+
+        if (currentAudio) {
+            currentAudio.pause();
+            currentAudio.currentTime = 0;
+        }
+
+        audio = new Audio(soundSrc);
+        currentAudio = audio;
+
+        audio.play();
+        stopBtn.disabled = false;
+
+        audio.addEventListener('ended', () => {
+            stopBtn.disabled = true;
+            currentAudio = null;
+        });
+    });
+
+    stopBtn.addEventListener('click', () => {
+        if (audio) {
+            audio.pause();
+            audio.currentTime = 0;
+            stopBtn.disabled = true;
+            currentAudio = null;
+        }
+    });
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'delete-btn';
+    deleteBtn.textContent = '✖';
+
+    deleteBtn.addEventListener('click', () => {
+        const confirmed = confirm(`Möchtest du den Button "${name}" wirklich löschen?`);
+        if (confirmed) {
+            if (audio) {
+                audio.pause();
+                audio.currentTime = 0;
+                currentAudio = null;
+            }
+            soundboard.removeChild(container);
+            const index = buttons.findIndex(b => b.name === name && b.soundSrc === soundSrc);
+            if (index !== -1) buttons.splice(index, 1);
+        }
+    });
+
+    const editBtn = document.createElement('button');
+    editBtn.className = 'edit-btn';
+    editBtn.textContent = 'Bearbeiten';
+    editBtn.addEventListener('click', () => editButton(button, container, fileName));
+
+    container.appendChild(button);
+    container.appendChild(stopBtn);
+    container.appendChild(deleteBtn);
+    container.appendChild(editBtn);
+    soundboard.appendChild(container);
+
+    buttons.push({ name, soundSrc, fileName });
+}
+
+        // Sound abspielen
+        function playSound(src) {
+            const audio = new Audio(src);
+            audio.play();
+        }
+
+        // Button bearbeiten
+        function editButton(button, container, oldFileName) {
+            const newName = prompt('Neuer Name für den Button:', button.textContent);
+            if (newName) button.textContent = newName;
+
+            const newSound = confirm('Möchtest du eine neue Sound-Datei hochladen?');
+            if (newSound) {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = 'audio/*';
+                input.onchange = (e) => {
+                    const file = e.target.files[0];
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                        const index = buttons.findIndex(b => b.name === oldFileName);
+                        if (index !== -1) {
+                            buttons[index].soundSrc = reader.result;
+                            buttons[index].fileName = file.name;
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                };
+                input.click();
+            }
+        }
+
+        // Konfiguration speichern
+        saveConfig.addEventListener('click', async () => {
+            const zip = new JSZip();
+            buttons.forEach(button => {
+                const base64 = button.soundSrc.split(',')[1];
+                zip.file(button.fileName, base64, { base64: true });
+                zip.file(`${button.name}.json`, JSON.stringify({ name: button.name, fileName: button.fileName }));
+            });
+
+            const blob = await zip.generateAsync({ type: 'blob' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'soundboard.zip';
+            a.click();
+        });
+
+        // Konfiguration laden
+        loadConfig.addEventListener('click', () => {
+            importConfig.click();
+        });
+
+        importConfig.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const zip = new JSZip();
+            const content = await zip.loadAsync(file);
+            const entries = Object.keys(content.files);
+
+            for (const entry of entries) {
+                if (entry.endsWith('.json')) {
+                    const metaData = JSON.parse(await zip.file(entry).async('string'));
+                    const soundFile = content.files[metaData.fileName];
+
+                    if (soundFile) {
+                        const soundData = await soundFile.async('blob');
+                        const soundSrc = URL.createObjectURL(soundData);
+                        createButton(metaData.name, soundSrc, metaData.fileName);
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
