@@ -125,14 +125,16 @@ function createButton(name, soundSrc, fileName) {
             currentAudio.currentTime = 0;
         }
 
-        audio = new Audio(soundSrc); // Base64-Daten verwenden
+        audio = new Audio(soundSrc);
         currentAudio = audio;
 
-        audio.play().catch((error) => {
+        // Eventuelle Probleme bei der Wiedergabe abfangen
+        audio.play().then(() => {
+            stopBtn.disabled = false;
+        }).catch((error) => {
             console.error("Fehler beim Abspielen der Audiodatei:", error);
             alert("Audio konnte nicht abgespielt werden. Bitte versuchen Sie es erneut.");
         });
-        stopBtn.disabled = false;
 
         audio.addEventListener('ended', () => {
             stopBtn.disabled = true;
@@ -180,6 +182,7 @@ function createButton(name, soundSrc, fileName) {
 
     buttons.push({ name, soundSrc, fileName });
 }
+
 
 
         // Sound abspielen
@@ -236,26 +239,29 @@ function createButton(name, soundSrc, fileName) {
         });
 
         importConfig.addEventListener('change', async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+        const file = e.target.files[0];
+        if (!file) return;
 
-    const zip = new JSZip();
-    const content = await zip.loadAsync(file);
-    const entries = Object.keys(content.files);
+        const zip = new JSZip();
+        const content = await zip.loadAsync(file);
+        const entries = Object.keys(content.files);
 
-    for (const entry of entries) {
-        if (entry.endsWith('.json')) {
-            const metaData = JSON.parse(await zip.file(entry).async('string'));
-            const soundFile = content.files[metaData.fileName];
+        for (const entry of entries) {
+            if (entry.endsWith('.json')) {
+                const metaData = JSON.parse(await zip.file(entry).async('string'));
+                const soundFile = content.files[metaData.fileName];
 
-            if (soundFile) {
-                const soundData = await soundFile.async('base64');
-                const soundSrc = `data:audio/*;base64,${soundData}`; // Base64-Daten als Quelle
-                createButton(metaData.name, soundSrc, metaData.fileName);
+                if (soundFile) {
+                    const soundData = await soundFile.async('base64');
+                    const fileExtension = metaData.fileName.split('.').pop();
+                    const mimeType = `audio/${fileExtension === 'mp3' ? 'mpeg' : fileExtension}`;
+                    const soundSrc = `data:${mimeType};base64,${soundData}`; // MIME-Typ ergänzen
+                    createButton(metaData.name, soundSrc, metaData.fileName);
+                }
             }
         }
-    }
-});
+    });
+
 
     </script>
 </body>
