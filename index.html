@@ -226,45 +226,41 @@ function createButton(name, soundSrc, fileName) {
     a.download = 'soundboard.zip';
     a.click();
 });
-importConfig.addEventListener('change', async (e) => {
+        importConfig.addEventListener('change', async (e) => {
     const file = e.target.files[0];
-    if (!file) {
-        console.error("Keine Datei ausgewählt.");
-        alert("Bitte wählen Sie eine ZIP-Datei aus.");
-        return;
-    }
+    if (!file) return;
 
     try {
         const zip = new JSZip();
-        console.log("ZIP-Datei wird geladen...");
         const content = await zip.loadAsync(file);
-        console.log("ZIP-Inhalt erfolgreich geladen:", content);
-
         const entries = Object.keys(content.files);
-        console.log("Dateien im ZIP:", entries);
 
         for (const entry of entries) {
             if (entry.endsWith('.json')) {
-                console.log(`Lade Metadaten aus ${entry}`);
                 const metaData = JSON.parse(await zip.file(entry).async('string'));
                 const soundFile = content.files[metaData.fileName];
 
                 if (soundFile) {
-                    console.log(`Lade Audiodatei ${metaData.fileName}`);
-                    const soundData = await soundFile.async('base64');
-                    const soundSrc = `data:audio/*;base64,${soundData}`;
+                    const soundData = await soundFile.async('base64'); // Base64 statt Blob
+                    const soundSrc = `data:audio/*;base64,${soundData}`; // Base64-URL
                     createButton(metaData.name, soundSrc, metaData.fileName);
-                    console.log(`Button für ${metaData.name} erstellt.`);
-                } else {
-                    console.error(`Audiodatei ${metaData.fileName} nicht gefunden.`);
                 }
             }
         }
     } catch (error) {
-        console.error("Fehler beim Verarbeiten der ZIP-Datei:", error);
-        alert("Fehler beim Importieren der Datei. Bitte prüfen Sie die Konsole für Details.");
+        console.error("Fehler beim Laden der Konfiguration:", error);
+        alert("Es gab ein Problem beim Importieren der Datei. Bitte stellen Sie sicher, dass die Datei korrekt ist.");
     }
 });
+
+const soundData = await soundFile.async('base64');
+if (!soundData) {
+    console.error("Sound-Daten konnten nicht gelesen werden.");
+    return;
+}
+const soundSrc = `data:audio/*;base64,${soundData}`;
+console.log("Audio-Quelle erfolgreich erstellt:", soundSrc);
+createButton(metaData.name, soundSrc, metaData.fileName);
 
 
     </script>
