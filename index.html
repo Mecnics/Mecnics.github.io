@@ -9,6 +9,32 @@
             font-family: Arial, sans-serif;
             margin: 20px;
         }
+
+        /* Abspiel-Button optisch hervorheben */
+        .play-btn {
+            background-color: #28a745; /* Auffälliges Grün */
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            padding: 15px 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, background-color 0.3s;
+        }
+
+        .play-btn:hover {
+            background-color: #218838; /* Dunkleres Grün beim Hover */
+            transform: scale(1.05); /* Leichtes Vergrößern beim Hover */
+        }
+
+        .play-btn:active {
+            background-color: #1e7e34; /* Noch dunkler bei Klick */
+            transform: scale(1.02); /* Leichtes Zurückfedern */
+        }
+
+
         .soundboard {
             display: flex;
             flex-wrap: wrap;
@@ -50,7 +76,7 @@ cursor: pointer;
 }
 
 .stop-btn {
-        background: orange;
+        background: red;
         color: white;
         border: none;
         padding: 5px 10px;
@@ -121,6 +147,7 @@ function createButton(name, soundSrc, fileName) {
 
     const button = document.createElement('button');
     button.textContent = name;
+    button.className = 'play-btn'; // Neue Klasse für Abspiel-Button
 
     const stopBtn = document.createElement('button');
     stopBtn.textContent = 'Stop';
@@ -196,6 +223,7 @@ function createButton(name, soundSrc, fileName) {
 
     buttons.push({ name, soundSrc, fileName });
 }
+
 
 
 
