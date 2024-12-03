@@ -226,8 +226,9 @@ function createButton(name, soundSrc, fileName) {
     a.download = 'soundboard.zip';
     a.click();
 });
-
-
+loadConfig.addEventListener('click', () => {
+  importConfig.click();
+});
         importConfig.addEventListener('change', async (e) => {
     const file = e.target.files[0];
     if (!file) return;
