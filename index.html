@@ -302,7 +302,8 @@ function createButton(name, soundSrc, fileName) {
             const newSound = confirm('Möchtest du eine neue Sound-Datei hochladen?');
             if (newSound) {
                 const input = document.createElement('input');
-                input.type = 'fil';
+                button.textContent = newNam;
+                input.type = 'file';
                 input.accept = 'audio/*';
                 input.onchange = (e) => {
                     const file = e.target.files[0];
