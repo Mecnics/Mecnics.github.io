@@ -73,7 +73,7 @@
           font-weight: bold;
           font-size: 14px;
           color: black;
-          width: 110px;
+          width: 100px;
           height: 50px;
         }
 
@@ -225,13 +225,14 @@ addButton.addEventListener('click', () => {
 });
 
 // Button erstellen
-function createButton(name, soundSrc, fileName) {
+function createButton(name, soundSrc, fileName, color = '#4caf50') {
     const container = document.createElement('div');
     container.className = 'button-container';
 
     const button = document.createElement('button');
     button.textContent = name;
     button.className = 'play-btn';
+    button.style.backgroundColor = color; // Setze die gespeicherte Farbe
 
     const stopBtn = document.createElement('button');
     stopBtn.textContent = 'Stop';
@@ -280,10 +281,15 @@ function createButton(name, soundSrc, fileName) {
     const colorPicker = document.createElement('input');
     colorPicker.type = 'color';
     colorPicker.className = 'color-picker';
-    colorPicker.value = '#4caf50'; // Standardfarbe
+    colorPicker.value = color;
 
     colorPicker.addEventListener('input', (e) => {
         button.style.backgroundColor = e.target.value;
+        // Update die Farbe in der buttons-Datenstruktur
+        const index = buttons.findIndex(b => b.name === name && b.soundSrc === soundSrc);
+        if (index !== -1) {
+            buttons[index].color = e.target.value;
+        }
     });
 
     const deleteBtn = document.createElement('button');
@@ -316,8 +322,9 @@ function createButton(name, soundSrc, fileName) {
     container.appendChild(editBtn);
     soundboard.appendChild(container);
 
-    buttons.push({ name, soundSrc, fileName });
+    buttons.push({ name, soundSrc, fileName, color });
 }
+
 
 
 
@@ -357,19 +364,24 @@ function createButton(name, soundSrc, fileName) {
 
         // Konfiguration speichern
         saveConfig.addEventListener('click', async () => {
-            const zip = new JSZip();
-            buttons.forEach(button => {
-                const base64 = button.soundSrc.split(',')[1];
-                zip.file(button.fileName, base64, { base64: true });
-                zip.file(`${button.name}.json`, JSON.stringify({ name: button.name, fileName: button.fileName }));
-            });
-
-            const blob = await zip.generateAsync({ type: 'blob' });
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = 'soundboard.zip';
-            a.click();
+        const zip = new JSZip();
+        buttons.forEach(button => {
+            const base64 = button.soundSrc.split(',')[1];
+            zip.file(button.fileName, base64, { base64: true });
+            zip.file(`${button.name}.json`, JSON.stringify({
+                name: button.name,
+                fileName: button.fileName,
+                color: button.color
+            }));
         });
+
+        const blob = await zip.generateAsync({ type: 'blob' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'soundboard.zip';
+        a.click();
+      });
+
 
         // Konfiguration laden
         loadConfig.addEventListener('click', () => {
@@ -377,28 +389,31 @@ function createButton(name, soundSrc, fileName) {
         });
 
         importConfig.addEventListener('change', async (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
+    const file = e.target.files[0];
+    if (!file) return;
 
-        const zip = new JSZip();
-        const content = await zip.loadAsync(file);
-        const entries = Object.keys(content.files);
+    const zip = new JSZip();
+    const content = await zip.loadAsync(file);
+    const entries = Object.keys(content.files);
 
-        for (const entry of entries) {
-            if (entry.endsWith('.json')) {
-                const metaData = JSON.parse(await zip.file(entry).async('string'));
-                const soundFile = content.files[metaData.fileName];
+    for (const entry of entries) {
+        if (entry.endsWith('.json')) {
+            const metaData = JSON.parse(await zip.file(entry).async('string'));
+            const soundFile = content.files[metaData.fileName];
 
-                if (soundFile) {
-                    const soundData = await soundFile.async('base64');
-                    const fileExtension = metaData.fileName.split('.').pop();
-                    const mimeType = `audio/${fileExtension === 'mp3' ? 'mpeg' : fileExtension}`;
-                    const soundSrc = `data:${mimeType};base64,${soundData}`; // MIME-Typ ergänzen
-                    createButton(metaData.name, soundSrc, metaData.fileName);
-                }
+            if (soundFile) {
+                const soundData = await soundFile.async('base64');
+                const fileExtension = metaData.fileName.split('.').pop();
+                const mimeType = `audio/${fileExtension === 'mp3' ? 'mpeg' : fileExtension}`;
+                const soundSrc = `data:${mimeType};base64,${soundData}`;
+
+                // Farbe verwenden, falls vorhanden
+                createButton(metaData.name, soundSrc, metaData.fileName, metaData.color);
             }
         }
-    });
+    }
+});
+
 
 
     </script>
