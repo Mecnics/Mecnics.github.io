@@ -16,6 +16,14 @@
             margin: 30px;
         }
 
+        .color-picker {
+    margin-top: 10px;
+    padding: 5px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+
         #buttonName {
           width: 200px;
           height: 30px;
@@ -122,27 +130,27 @@
         width: 150px;
     }
     .button-container button {
-  margin: 5px 0;
-  padding: 10px 20px;
-  font-size: 14px;
-  cursor: pointer;
+      margin: 5px 0;
+      padding: 10px 20px;
+      font-size: 14px;
+      cursor: pointer;
 }
 
-.delete-btn {
-position: absolute;
-top: -10px;
-right: -10px;
-background: red;
-color: white;
-border: none;
-border-radius: 50%;
-font-size: 12px;
-width: 20px;
-height: 20px;
-display: flex;
-justify-content: center;
-align-items: center;
-cursor: pointer;
+      .delete-btn {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      background: red;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      font-size: 12px;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
 }
 
 .stop-btn {
@@ -223,7 +231,7 @@ function createButton(name, soundSrc, fileName) {
 
     const button = document.createElement('button');
     button.textContent = name;
-    button.className = 'play-btn'; // Neue Klasse für Abspiel-Button
+    button.className = 'play-btn';
 
     const stopBtn = document.createElement('button');
     stopBtn.textContent = 'Stop';
@@ -268,6 +276,16 @@ function createButton(name, soundSrc, fileName) {
         }
     });
 
+    // Farb-Änderungs-Button
+    const colorPicker = document.createElement('input');
+    colorPicker.type = 'color';
+    colorPicker.className = 'color-picker';
+    colorPicker.value = '#4caf50'; // Standardfarbe
+
+    colorPicker.addEventListener('input', (e) => {
+        button.style.backgroundColor = e.target.value;
+    });
+
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'delete-btn';
     deleteBtn.textContent = '✖';
@@ -293,12 +311,14 @@ function createButton(name, soundSrc, fileName) {
 
     container.appendChild(button);
     container.appendChild(stopBtn);
+    container.appendChild(colorPicker);
     container.appendChild(deleteBtn);
     container.appendChild(editBtn);
     soundboard.appendChild(container);
 
     buttons.push({ name, soundSrc, fileName });
 }
+
 
 
 
