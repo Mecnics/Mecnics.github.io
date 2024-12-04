@@ -93,7 +93,7 @@
           height: 100px;
             background-color: #28a745; /* Auffälliges Grün */
             color: white;
-            font-size: 20px;
+            font-size: 50px;
             font-weight: bold;
             border: none;
             border-radius: 5px;
@@ -104,13 +104,17 @@
         }
 
         .play-btn:hover {
+          font-size: 15px;
             background-color: #218838; /* Dunkleres Grün beim Hover */
             transform: scale(1.05); /* Leichtes Vergrößern beim Hover */
+            transition: transform 0.2s;
         }
 
         .play-btn:active {
+          font-size: 15px;
             background-color: #1e7e34; /* Noch dunkler bei Klick */
-            transform: scale(1.5); /* Leichtes Zurückfedern */
+            transform: scale(1.05); /* Leichtes Zurückfedern */
+            transition: transform 0.2s;
         }
 
 
@@ -118,7 +122,7 @@
           margin-top: 20px;
             display: flex;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 30px;
         }
 
         .button-container {
@@ -141,15 +145,15 @@
 
       .delete-btn {
       position: absolute;
-      top: -10px;
-      right: -10px;
+      top: -25px;
+      right: -25px;
       background: red;
       color: white;
       border: none;
       border-radius: 50%;
       font-size: 12px;
-      width: 20px;
-      height: 20px;
+      width: 5px;
+      height:38px;
       display: flex;
       justify-content: center;
       align-items: center;
