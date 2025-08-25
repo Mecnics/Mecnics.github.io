@@ -464,112 +464,119 @@
       </script>
   </div>
 
-
-
   <script src="https://cdn.jsdelivr.net/npm/jszip/dist/jszip.min.js"></script>
   <script>
-      // Login-Daten
+      // ==== Benutzerverwaltung ====
       const USERS = [
-        { username: "admin", password: "password" },
-        { username: "RockA", password: "Byte" },
-        { username: "StudioDRuMM", password: "StudioDRuMM2024" }
+          {
+              username: "admin",
+              password: "password",
+              zip: "https://mecnics.github.io/default_sounds.zip"
+          },
+          {
+              username: "RockA",
+              password: "Byte",
+              zip: "https://mecnics.github.io/default_sounds.zip"
+          },
+          {
+              username: "StudioDRuMM",
+              password: "StudioDRuMM2024",
+              zip: "https://mecnics.github.io/default_sounds.zip"
+          }
       ];
 
-
-
-      // const DUMMY_USER = { username: "admin", password: "password" };
-      // const DUMMY_USER = { username: "RockA", password: "Byte" };
-      // const DRUMM_USER = { username: "StudioDRuMM", password: "StudioDRuMM2024" };
-
-      // Elemente referenzieren
+      // ==== Referenzen ====
       const loginForm = document.getElementById("loginForm");
       const mainContent = document.getElementById("mainContent");
       const logoutButton = document.getElementById("logoutButton");
 
-      // Login-Funktion
-      document.getElementById("loginButton").addEventListener("click", () => {
-          const username = document.getElementById("username").value;
-          const password = document.getElementById("password").value;
+      // ==== Login-Handling ====
+      document.getElementById("loginButton").addEventListener("click", handleLogin);
 
-          if (username === DUMMY_USER.username && password === DUMMY_USER.password) {
+      document.addEventListener("keydown", (event) => {
+          if (event.key === "Enter") handleLogin();
+      });
+
+      async function handleLogin() {
+          const username = document.getElementById("username").value.trim();
+          const password = document.getElementById("password").value.trim();
+
+          const user = USERS.find(u => u.username === username && u.password === password);
+
+          if (user) {
               sessionStorage.setItem("isLoggedIn", "true");
+              sessionStorage.setItem("activeUser", user.username);
+
               loginForm.classList.add("hidden");
               mainContent.classList.remove("hidden");
               logoutButton.classList.remove("hidden");
+
+              // ZIP laden, wenn vorhanden
+              if (user.zip) await loadZip(user.zip);
+
+          } else {
+              alert("Ungültiger Benutzername oder Passwort!");
           }
+      }
 
-      });
-
-      // Logout-Funktion
+      // ==== Logout ====
       logoutButton.addEventListener("click", () => {
           sessionStorage.removeItem("isLoggedIn");
+          sessionStorage.removeItem("activeUser");
+
           loginForm.classList.remove("hidden");
           mainContent.classList.add("hidden");
           logoutButton.classList.add("hidden");
       });
 
-      // Initiale Überprüfung beim Laden
+      // ==== Sichtbarkeit beim Reload ====
       if (sessionStorage.getItem("isLoggedIn") === "true") {
           loginForm.classList.add("hidden");
           mainContent.classList.remove("hidden");
           logoutButton.classList.remove("hidden");
+
+          const activeUser = USERS.find(u => u.username === sessionStorage.getItem("activeUser"));
+          if (activeUser && activeUser.zip) {
+              // async IIFE, damit await erlaubt ist
+              (async () => {
+                  await loadZip(activeUser.zip);
+              })();
+          }
       }
 
+      // ==== ZIP-Loader ====
+      async function loadZip(zipUrl) {
+          try {
+              const response = await fetch(zipUrl);
+              if (!response.ok) throw new Error("ZIP nicht gefunden: " + zipUrl);
 
+              const blob = await response.blob();
+              const zip = new JSZip();
+              const content = await zip.loadAsync(blob);
+              const entries = Object.keys(content.files);
 
+              for (const entry of entries) {
+                  if (entry.endsWith('.json')) {
+                      const metaData = JSON.parse(await zip.file(entry).async('string'));
+                      const soundFile = content.files[metaData.fileName];
 
-      // Login-Funktion
-document.getElementById("loginButton").addEventListener("click", handleLogin);
+                      if (soundFile) {
+                          const soundData = await soundFile.async('base64');
+                          const fileExtension = metaData.fileName.split('.').pop();
+                          const mimeType = `audio/${fileExtension === 'mp3' ? 'mpeg' : fileExtension}`;
+                          const soundSrc = `data:${mimeType};base64,${soundData}`;
 
-// Login bei Drücken der Enter-Taste
-document.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") {
-        handleLogin();
-    }
-});
-
-// Login-Funktion auslagern, um sie mehrfach zu verwenden
-
-function handleLogin() {
-  const username = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
-
-  const user = USERS.find(u => u.username === username && u.password === password);
-
-  if (user) {
-      sessionStorage.setItem("isLoggedIn", "true");
-      loginForm.classList.add("hidden");
-      mainContent.classList.remove("hidden");
-      logoutButton.classList.remove("hidden");
-  } else {
-      alert("Ungültiger Benutzername oder Passwort!");
-  }
-}
-
-
-
-
-
-// function handleLogin() {
-//     const username = document.getElementById("username").value;
-//     const password = document.getElementById("password").value;
-//
-//     if (username === DUMMY_USER.username && password === DUMMY_USER.password) {
-//         sessionStorage.setItem("isLoggedIn", "true");
-//         updateVisibility();
-//     } else if (username === DRUMM_USER.username && password === DRUMM_USER.password) {
-//         sessionStorage.setItem("isLoggedIn", "true");
-//         loginForm.classList.add("hidden");
-//         mainContent.classList.remove("hidden");
-//         logoutButton.classList.remove("hidden");
-//     } else {
-//         alert("Ungültiger Benutzername oder Passwort!");
-//     }
-// }
-
-
-
-
+                          createButton(metaData.name, soundSrc, metaData.fileName, metaData.color);
+                      }
+                  }
+              }
+          } catch (error) {
+              console.error("Fehler beim Laden der ZIP:", error);
+              alert("Fehler beim Laden der Sound-ZIP! Prüfe den GitHub Pages Link.");
+          }
+      }
   </script>
+
+
 </body>
 </html>
