@@ -469,9 +469,17 @@
   <script src="https://cdn.jsdelivr.net/npm/jszip/dist/jszip.min.js"></script>
   <script>
       // Login-Daten
-      const DUMMY_USER = { username: "admin", password: "password" };
-      const DUMMY_USER = { username: "RockA", password: "Byte" };
-      const DRUMM_USER = { username: "StudioDRuMM", password: "StudioDRuMM2024" };
+      const USERS = [
+        { username: "admin", password: "password" },
+        { username: "RockA", password: "Byte" },
+        { username: "StudioDRuMM", password: "StudioDRuMM2024" }
+      ];
+
+
+
+      // const DUMMY_USER = { username: "admin", password: "password" };
+      // const DUMMY_USER = { username: "RockA", password: "Byte" };
+      // const DRUMM_USER = { username: "StudioDRuMM", password: "StudioDRuMM2024" };
 
       // Elemente referenzieren
       const loginForm = document.getElementById("loginForm");
@@ -521,22 +529,43 @@ document.addEventListener("keydown", (event) => {
 });
 
 // Login-Funktion auslagern, um sie mehrfach zu verwenden
-function handleLogin() {
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
 
-    if (username === DUMMY_USER.username && password === DUMMY_USER.password) {
-        sessionStorage.setItem("isLoggedIn", "true");
-        updateVisibility();
-    } else if (username === DRUMM_USER.username && password === DRUMM_USER.password) {
-        sessionStorage.setItem("isLoggedIn", "true");
-        loginForm.classList.add("hidden");
-        mainContent.classList.remove("hidden");
-        logoutButton.classList.remove("hidden");
-    } else {
-        alert("Ungültiger Benutzername oder Passwort!");
-    }
+function handleLogin() {
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+
+  const user = USERS.find(u => u.username === username && u.password === password);
+
+  if (user) {
+      sessionStorage.setItem("isLoggedIn", "true");
+      loginForm.classList.add("hidden");
+      mainContent.classList.remove("hidden");
+      logoutButton.classList.remove("hidden");
+  } else {
+      alert("Ungültiger Benutzername oder Passwort!");
+  }
 }
+
+
+
+
+
+// function handleLogin() {
+//     const username = document.getElementById("username").value;
+//     const password = document.getElementById("password").value;
+//
+//     if (username === DUMMY_USER.username && password === DUMMY_USER.password) {
+//         sessionStorage.setItem("isLoggedIn", "true");
+//         updateVisibility();
+//     } else if (username === DRUMM_USER.username && password === DRUMM_USER.password) {
+//         sessionStorage.setItem("isLoggedIn", "true");
+//         loginForm.classList.add("hidden");
+//         mainContent.classList.remove("hidden");
+//         logoutButton.classList.remove("hidden");
+//     } else {
+//         alert("Ungültiger Benutzername oder Passwort!");
+//     }
+// }
 
 
 
