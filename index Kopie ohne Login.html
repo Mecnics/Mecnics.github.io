@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soundboard Studio DRuMM</title>
+    <style>
+        body {
+            /* font-family: Arial, sans-serif; */
+            font-family: Poppins;
+            margin: 30px;
+        }
+
+        .color-picker {
+    margin-top: 10px;
+    padding: 5px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+
+        #buttonName {
+          width: 200px;
+          height: 30px;
+        }
+
+        #soundFile {
+          width: 400px;
+          font-weight: bold;
+          font-size: 18px;
+        }
+
+        #addButton {
+          /* background-color: lightgreen; */
+          background-color: #48ba81;
+          font-weight: bold;
+          font-size: 14px;
+          color: black;
+          width: 125px;
+          height: 50px;
+        }
+
+        #addButton:hover {
+          /* background-color: #48ba81; */
+          opacity: 70%;
+          width: 125px;
+          height: 50px;
+        }
+
+        #saveConfig {
+          /* background-color: orange; */
+          background-color: #3b54a5;
+          font-weight: bold;
+          font-size: 14px;
+          color: white;
+          margin-left: 3%;
+          width: 100px;
+          height: 50px;
+        }
+
+        #saveConfig:hover {
+          /* background-color: ; */
+          opacity: 70%;
+          width: 100px;
+          height: 50px;
+        }
+
+        #loadConfig {
+          /* background-color: darkorange; */
+          background-color: #eb6526;
+          font-weight: bold;
+          font-size: 14px;
+          color: black;
+          width: 110px;
+          height: 50px;
+        }
+
+        #loadConfig:hover {
+          /* background-color: ; */
+          opacity: 70%;
+          width: 110px;
+          height: 50px;
+        }
+
+        /* Abspiel-Button optisch hervorheben */
+        .play-btn {
+          width: 150px;
+          height: 100px;
+            background-color: #28a745; /* Auffälliges Grün */
+            color: white;
+            font-size: 50px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            padding: 15px 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, background-color 0.3s;
+        }
+
+        .play-btn:hover {
+          font-size: 15px;
+            background-color: #218838; /* Dunkleres Grün beim Hover */
+            transform: scale(1.05); /* Leichtes Vergrößern beim Hover */
+            transition: transform 0.2s;
+        }
+
+        .play-btn:active {
+          font-size: 15px;
+            background-color: #1e7e34; /* Noch dunkler bei Klick */
+            transform: scale(1.05); /* Leichtes Zurückfedern */
+            transition: transform 0.2s;
+        }
+
+
+        .soundboard {
+          margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .button-container {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+        background: #f9f9f9;
+        width: 150px;
+    }
+    .button-container button {
+      margin: 5px 0;
+      padding: 10px 20px;
+      font-size: 14px;
+      cursor: pointer;
+}
+
+      .delete-btn {
+      position: absolute;
+      top: -25px;
+      right: -25px;
+      background: red;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      font-size: 12px;
+      width: 5px;
+      height:38px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+}
+
+.stop-btn {
+        background: red;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        font-size: 12px;
+        .edit-btn {
+            margin-top: 5px;
+            background: orange;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+      .save-btn {
+        background: red;
+      }
+
+        .form {
+            margin-bottom: 20px;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- <h1>Soundboard Studio DRuMM</h1> -->
+    <h1><img src="img/SoundboardLogo.jpg" width="380"
+     height="180"/></h1>
+    <div class="form">
+        <input type="text" id="buttonName" placeholder="Button-Name" required>
+        <input type="file" id="soundFile" accept="audio/*" required>
+        <button id="addButton">+ Hinzufügen</button>
+        <button id="saveConfig">Speichern</button>
+        <input type="file" id="importConfig" style="display: none;" accept=".zip">
+        <button id="loadConfig">Importieren</button>
+    </div>
+    <div class="soundboard" id="soundboard"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jszip/dist/jszip.min.js"></script>
+    <script>
+        const soundboard = document.getElementById('soundboard');
+        const addButton = document.getElementById('addButton');
+        const buttonNameInput = document.getElementById('buttonName');
+        const soundFileInput = document.getElementById('soundFile');
+        const saveConfig = document.getElementById('saveConfig');
+        const loadConfig = document.getElementById('loadConfig');
+        const importConfig = document.getElementById('importConfig');
+        const buttons = [];
+
+        let currentAudio = null; // Aktuell laufender Sound
+
+// Button hinzufügen
+addButton.addEventListener('click', () => {
+    const buttonName = buttonNameInput.value.trim();
+    const soundFile = soundFileInput.files[0];
+
+    if (!buttonName || !soundFile) {
+        alert('Bitte einen Namen und eine Sound-Datei angeben.');
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+        createButton(buttonName, reader.result, soundFile.name);
+    };
+    reader.readAsDataURL(soundFile);
+
+    buttonNameInput.value = '';
+    soundFileInput.value = '';
+});
+
+// Button erstellen
+function createButton(name, soundSrc, fileName, color = '#4caf50') {
+    const container = document.createElement('div');
+    container.className = 'button-container';
+
+    const button = document.createElement('button');
+    button.textContent = name;
+    button.className = 'play-btn';
+    button.style.backgroundColor = color; // Setze die gespeicherte Farbe
+
+    const stopBtn = document.createElement('button');
+    stopBtn.textContent = 'Stop';
+    stopBtn.className = 'stop-btn';
+    stopBtn.disabled = true;
+
+    let audio = null;
+
+    button.addEventListener('click', () => {
+        if (audio && !audio.paused) {
+            return; // Verhindert mehrfaches Starten
+        }
+
+        if (currentAudio) {
+            currentAudio.pause();
+            currentAudio.currentTime = 0;
+        }
+
+        audio = new Audio(soundSrc);
+        currentAudio = audio;
+
+        // Eventuelle Probleme bei der Wiedergabe abfangen
+        audio.play().then(() => {
+            stopBtn.disabled = false;
+        }).catch((error) => {
+            console.error("Fehler beim Abspielen der Audiodatei:", error);
+            alert("Audio konnte nicht abgespielt werden. Bitte versuchen Sie es erneut.");
+        });
+
+        audio.addEventListener('ended', () => {
+            stopBtn.disabled = true;
+            currentAudio = null;
+        });
+    });
+
+    stopBtn.addEventListener('click', () => {
+        if (audio) {
+            audio.pause();
+            audio.currentTime = 0;
+            stopBtn.disabled = true;
+            currentAudio = null;
+        }
+    });
+
+    // Farb-Änderungs-Button
+    const colorPicker = document.createElement('input');
+    colorPicker.type = 'color';
+    colorPicker.className = 'color-picker';
+    colorPicker.value = color;
+
+    colorPicker.addEventListener('input', (e) => {
+        button.style.backgroundColor = e.target.value;
+        // Update die Farbe in der buttons-Datenstruktur
+        const index = buttons.findIndex(b => b.name === name && b.soundSrc === soundSrc);
+        if (index !== -1) {
+            buttons[index].color = e.target.value;
+        }
+    });
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'delete-btn';
+    deleteBtn.textContent = '✖';
+
+    deleteBtn.addEventListener('click', () => {
+        const confirmed = confirm(`Möchtest du den Button "${name}" wirklich löschen?`);
+        if (confirmed) {
+            if (audio) {
+                audio.pause();
+                audio.currentTime = 0;
+                currentAudio = null;
+            }
+            soundboard.removeChild(container);
+            const index = buttons.findIndex(b => b.name === name && b.soundSrc === soundSrc);
+            if (index !== -1) buttons.splice(index, 1);
+        }
+    });
+
+    const editBtn = document.createElement('button');
+    editBtn.className = 'edit-btn';
+    editBtn.textContent = 'Bearbeiten';
+    editBtn.addEventListener('click', () => editButton(button, container, fileName));
+
+    container.appendChild(button);
+    container.appendChild(stopBtn);
+    container.appendChild(colorPicker);
+    container.appendChild(deleteBtn);
+    container.appendChild(editBtn);
+    soundboard.appendChild(container);
+
+    buttons.push({ name, soundSrc, fileName, color });
+}
+
+
+
+
+
+
+        // Sound abspielen
+        function playSound(src) {
+            const audio = new Audio(src);
+            audio.play();
+        }
+
+        // Button bearbeiten
+        function editButton(button, container, oldFileName) {
+            const newName = prompt('Neuer Name für den Button:', button.textContent);
+            if (newName) button.textContent = newName;
+
+            const newSound = confirm('Möchtest du eine neue Sound-Datei hochladen?');
+            if (newSound) {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = 'audio/*';
+                input.onchange = (e) => {
+                    const file = e.target.files[0];
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                        const index = buttons.findIndex(b => b.name === oldFileName);
+                        if (index !== -1) {
+                            buttons[index].soundSrc = reader.result;
+                            buttons[index].fileName = file.name;
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                };
+                input.click();
+            }
+        }
+
+        // Konfiguration speichern
+        saveConfig.addEventListener('click', async () => {
+        const zip = new JSZip();
+        buttons.forEach(button => {
+            const base64 = button.soundSrc.split(',')[1];
+            zip.file(button.fileName, base64, { base64: true });
+            zip.file(`${button.name}.json`, JSON.stringify({
+                name: button.name,
+                fileName: button.fileName,
+                color: button.color
+            }));
+        });
+
+        const blob = await zip.generateAsync({ type: 'blob' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'soundboard.zip';
+        a.click();
+      });
+
+
+        // Konfiguration laden
+        loadConfig.addEventListener('click', () => {
+            importConfig.click();
+        });
+
+        importConfig.addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const zip = new JSZip();
+    const content = await zip.loadAsync(file);
+    const entries = Object.keys(content.files);
+
+    for (const entry of entries) {
+        if (entry.endsWith('.json')) {
+            const metaData = JSON.parse(await zip.file(entry).async('string'));
+            const soundFile = content.files[metaData.fileName];
+
+            if (soundFile) {
+                const soundData = await soundFile.async('base64');
+                const fileExtension = metaData.fileName.split('.').pop();
+                const mimeType = `audio/${fileExtension === 'mp3' ? 'mpeg' : fileExtension}`;
+                const soundSrc = `data:${mimeType};base64,${soundData}`;
+
+                // Farbe verwenden, falls vorhanden
+                createButton(metaData.name, soundSrc, metaData.fileName, metaData.color);
+            }
+        }
+    }
+});
+
+
+
+    </script>
+</body>
+</html>
